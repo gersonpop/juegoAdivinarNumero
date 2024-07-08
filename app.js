@@ -1,24 +1,71 @@
+let numeroSecreto = 0;
+let intentos = 0;
+let registro = [];
+let rangoMax = 10;
 
-let titulo = document.querySelector('h1')
-titulo.innerHTML="Hora del Desafío"
+function condicionesIniciales() {
+    asignarTextoElemento('h1', "Juego de número secreto");
+    asignarTextoElemento('p', `indica un numero de 1 al ${rangoMax}`);
+    numeroSecreto = generarNUmeroSecreto()
+    intentos = 1;
+}
+condicionesIniciales();
+function verficarIntento() {
+    let elemento = document.getElementById('valorUsuario')
+    let numeroUsuario = parseInt(elemento.value)
 
-function msgConsole(){
-    console.log("El botón fue clicado")
+
+
+    if (numeroUsuario == numeroSecreto) {
+        asignarTextoElemento('p', `genial, encontraste el número en ${intentos} ${intentos == 1 ? 'intento' : 'intentos'}`)
+        document.getElementById('reiniciar').removeAttribute('disabled')
+    } else {
+        if (numeroUsuario > numeroSecreto) {
+            asignarTextoElemento('p', 'el número secreto es menor')
+        } else {
+            asignarTextoElemento('p', 'el número secreto es mayor')
+        }
+        intentos++
+        limpiarElemento();
+    }
 }
 
-function prompQuestion(){
-    let pregunta = prompt('por favor indique una ciudad de Barsil')
-    alert(pregunta)
+function asignarTextoElemento(tag, texto) {
+    let elemento = document.querySelector(tag);
+    elemento.innerHTML = texto;
+
 }
 
-function msgAlert(){
-    alert("Yo amo JS")
+function generarNUmeroSecreto() {
+
+    let numeroGenerado = Math.floor(Math.random() * 10) + 1;
+    console.log(numeroGenerado)
+    console.log(registro)
+    //Si ta sorteamos todos los numero
+    console.log(registro.length ,  rangoMax)
+    if (registro.length == rangoMax) {
+        asignarTextoElemento('p', 'ya se sortearon todos los números posible')
+    }
+    else {
+        //si el numero generado esta en la lista
+        if (registro.includes(numeroGenerado)) {
+            return generarNUmeroSecreto()
+
+        } else {
+            registro.push(numeroGenerado)
+            return numeroGenerado; ge
+        }
+    }
+
 }
 
+function limpiarElemento() {
+    document.querySelector('#valorUsuario').value = ""
 
-function sumar() {
-    let numero1 = parseInt(prompt('por favor indique el primer numero'))
-    let numero2 = parseInt(prompt('por favor indique el segundo nuemro'))
-    let resultado = numero1+numero2
-    alert(`la suma de los numeros es ${resultado}`)
+} function reiniciarJuego() {
+
+    condicionesIniciales();
+    limpiarElemento();
+    document.getElementById('reiniciar').setAttribute('disabled', true)
+
 }
